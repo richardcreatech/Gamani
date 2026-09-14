@@ -1,0 +1,346 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#auth_page {
+  min-height: 90vh;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth_content {
+  width: 100%;
+}
+
+.auth_switch {
+  width: min(100%, 420px);
+  margin: 24px auto 0;
+  color: #666;
+  text-align: center;
+}
+
+.auth_switch a {
+  color: #111;
+  font-weight: 600;
+}
+
+.auth_form_page {
+  /* min-height: 100vh; */
+  width: 100%;
+  /* padding: 32px 48px; */
+  display: flex;
+  flex-direction: column;
+}
+
+.auth_form_page > img {
+  object-fit: contain;
+}
+
+.auth_intro {
+  width: min(100%, 420px);
+  margin: auto auto 32px;
+}
+
+.auth_intro h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+
+.auth_intro p {
+  margin-top: 12px;
+  color: #666;
+  font-size: 1rem;
+}
+
+.auth_form {
+  width: min(100%, 420px);
+  margin: 0 auto auto;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth_form input {
+  width: 100%;
+  padding: 14px 16px;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  font: inherit;
+  outline: none;
+}
+
+.auth_form input:focus {
+  border-color: #333;
+}
+
+.auth_form button {
+  width: 100%;
+  padding: 14px 16px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #111;
+  color: white;
+
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth_form button:hover {
+  opacity: 0.9;
+}
+
+.auth_form_page {
+  min-height: 100vh;
+  padding: 32px 48px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.auth_intro,
+.auth_form {
+  width: min(100%, 420px);
+}
+
+.auth_intro {
+  margin: auto auto 32px;
+}
+
+.auth_form {
+  margin: 0 auto auto;
+}
+
+.notification {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(calc(100% - 32px), 440px);
+  padding: 13px 16px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(17, 17, 17, 0.14);
+  color: #1f2933;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  transform: translate(-50%, 0);
+  animation: notification-enter 220ms ease-out;
+}
+
+.notification--success {
+  border-color: #b8e4cc;
+  background: #effaf3;
+}
+
+.notification--error {
+  border-color: #f0bcbc;
+  background: #fff3f3;
+}
+
+.notification--info {
+  border-color: #c5d9ee;
+  background: #f2f7fc;
+}
+
+.notification__icon {
+  display: grid;
+  flex: 0 0 22px;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.notification--success .notification__icon {
+  background: #16834b;
+}
+
+.notification--error .notification__icon {
+  background: #c23838;
+}
+
+.notification--info .notification__icon {
+  background: #2f6fa5;
+}
+
+.notification__close {
+  margin-left: auto;
+  padding: 0 0 0 8px;
+  border: 0;
+  background: transparent;
+  color: #64707d;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@keyframes notification-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.notification--closing {
+  animation: notification-exit 300ms ease-in forwards;
+}
+
+@keyframes notification-exit {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+}
+
+@media (max-width: 480px) {
+  .notification {
+    top: 16px;
+  }
+}
+
+/* -----------------------------------------------------------------------
+   GamaniSplash.css
+   EVERY selector in this file is a descendant of #gamani-splash, so
+   nothing here can ever leak onto other pages/components. Do not add a
+   bare element, class, or `*` selector outside that root.
+----------------------------------------------------------------------- */
+
+#gamani-splash {
+  /* Local "design tokens" as CSS custom properties, scoped to this
+     element so they can't collide with variables elsewhere in the app. */
+  --gamani-bg: #ffffff;
+  --gamani-pixel-canopy: #1a1720; /* near-black, faintly purple-tinted */
+  --gamani-pixel-trunk: #241d2e; /* slightly warmer near-black for depth */
+  --gamani-glow: #4d9fff; /* purple accent glow */
+  --gamani-shadow: rgba(26, 23, 32, 0.28);
+  --gamani-wordmark: #1a1720;
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  background: var(--gamani-bg);
+
+  /* Prevents any scrollbars from the splash while it's covering the page. */
+  overflow: hidden;
+}
+
+#gamani-splash .gamani-splash__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+
+  /* Responsive sizing: the tree never exceeds a comfortable size on
+     large screens, but shrinks fluidly on small ones. No fixed pixel
+     width, so it can't get cut off on mobile. */
+  width: min(50vw, 280px);
+  max-height: 85vh;
+}
+
+#gamani-splash .gamani-splash__pixel-tree {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+
+  /* Keeps every 1x1 rect a crisp, hard-edged square instead of letting
+     the renderer anti-alias/soften pixel edges — this is what makes it
+     read as chunky retro pixel art rather than a blurry blob. */
+  shape-rendering: crispEdges;
+}
+
+/* --- The pixels themselves ------------------------------------------- */
+
+#gamani-splash .gamani-splash__pixel {
+  stroke: none;
+}
+
+#gamani-splash .gamani-splash__pixel--canopy {
+  fill: var(--gamani-pixel-canopy);
+}
+
+#gamani-splash .gamani-splash__pixel--trunk {
+  fill: var(--gamani-pixel-trunk);
+}
+
+/* Glow pixels sit on top of the silhouette color but get their real
+   "glow" from the separate blurred halo circle rendered behind them
+   (see .gamani-splash__glow-halo below). */
+#gamani-splash .gamani-splash__pixel--glow {
+  fill: var(--gamani-glow);
+}
+
+#gamani-splash .gamani-splash__glow-halo {
+  fill: var(--gamani-glow);
+}
+
+/* #gamani-splash .gamani-splash__ground-shadow {
+  fill: var(--gamani-shadow);
+} */
+
+/* --- Wordmark ---------------------------------------------------------- */
+
+#gamani-splash .gamani-splash__wordmark {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: var(--gamani-wordmark);
+
+  /* Starts hidden/offset; GSAP animates it to opacity 1 / y 0 during
+     the final phase of the timeline. */
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* --- Small-screen tweaks ------------------------------------------------ */
+
+@media (max-width: 480px) {
+  #gamani-splash .gamani-splash__stage {
+    width: min(65vw, 220px);
+    gap: 1rem;
+  }
+
+  #gamani-splash .gamani-splash__wordmark {
+    font-size: 0.9rem;
+    letter-spacing: 0.22em;
+  }
+}
