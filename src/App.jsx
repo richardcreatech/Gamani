@@ -31,6 +31,7 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="/splash" element={<SplashRoute />} />
         <Route path="/app" element={<Home />} />
+        
       </Route>
     </Routes>
   );
