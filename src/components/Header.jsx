@@ -1,6 +1,6 @@
 import { FontAwesomeIcon as FontAwesome } from "@fortawesome/react-fontawesome";
 import { faSun, faUser } from "@fortawesome/free-solid-svg-icons";
-import logo from "./../assets/logo.png";
+import logo from "./../assets/logo_2.png";
 
 function Header() {
   return (
@@ -12,7 +12,7 @@ function Header() {
           className="header__logo"
         />
 
-        <span className="brand-name">Gamani</span>
+        {/* <span className="brand-name">Gamani</span> */}
       </div>
 
       <div className="me_links">

@@ -5,6 +5,7 @@ import Signup from "./components/SignUp";
 import Auth from "./pages/Auth/Auth";
 import GamaniSplash from "./pages/Splash/Gamanisplash";
 import Home from "./pages/App/Home";
+import Mail from "./pages/App/Main/Mail/Mail";
 
 function ProtectedRoute() {
   const { user } = useAuth();
@@ -30,8 +31,9 @@ function App() {
 
       <Route element={<ProtectedRoute />}>
         <Route path="/splash" element={<SplashRoute />} />
-        <Route path="/app" element={<Home />} />
-        
+        <Route path="/app" element={<Home />}>
+          <Route path="" element={<Mail />} />
+        </Route>
       </Route>
     </Routes>
   );
