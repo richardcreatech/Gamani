@@ -1,9 +1,10 @@
+import { Outlet } from "react-router-dom"
 
 function Spotify() {
   return (
-    <div>
-      
-    </div>
+    <section id="spotify_page">
+      <Outlet />
+    </section>
   )
 }
 

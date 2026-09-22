@@ -5,7 +5,9 @@ import Signup from "./components/SignUp";
 import Auth from "./pages/Auth/Auth";
 import GamaniSplash from "./pages/Splash/Gamanisplash";
 import Home from "./pages/App/Home";
-import Mail from "./pages/App/Main/Mail/Mail";
+// import Mail from "./pages/App/Main/Mail/Mail";
+import Spotify from "./pages/App/Main/Music/Spotify";
+import Connect_Spotify from "./pages/App/Main/Music/Connect_Spotify";
 
 function ProtectedRoute() {
   const { user } = useAuth();
@@ -32,7 +34,9 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="/splash" element={<SplashRoute />} />
         <Route path="/app" element={<Home />}>
-          <Route path="" element={<Mail />} />
+          <Route path="" element={<Spotify />}>
+            <Route path="" element={<Connect_Spotify />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

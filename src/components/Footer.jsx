@@ -16,17 +16,18 @@ function Footer() {
     <footer id="footer">
       <nav>
         <ul>
-          <li>
+
+            <li>
             <Link to="">
-              <FontAwesomeIcon icon={faEnvelope} />
-              <span>Mail</span>
+              <FontAwesomeIcon icon={faSpotify} />
+              <span>Spotify</span>
             </Link>
           </li>
 
           <li>
             <Link to="">
-              <FontAwesomeIcon icon={faSpotify} />
-              <span>Spotify</span>
+              <FontAwesomeIcon icon={faEnvelope} />
+              <span>Mail</span>
             </Link>
           </li>
 
