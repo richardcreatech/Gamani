@@ -2433,7 +2433,6 @@ body {
   width: 100%;
   max-width: 1150px;
   min-height: 100%;
-margin-bottom: 70px;
   margin: 0 auto;
   padding: 10px 0 50px;
 
@@ -2441,6 +2440,7 @@ margin-bottom: 70px;
   grid-template-columns: 260px minmax(0, 1fr);
   gap: 45px;
   align-items: start;
+margin-bottom: 70px;
 }
 
 /* =========================
