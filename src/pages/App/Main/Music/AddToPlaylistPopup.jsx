@@ -7,19 +7,19 @@ function AddToPlaylistPopup() {
       id: 1,
       name: "Late Night Thoughts",
       songs: 12,
-      cover: "/playlist-cover.jpg",
+      cover: "/https://i.pinimg.com/736x/00/b5/dd/00b5dd3c625e0ebcdc3770e95162fe46.jpg",
     },
     {
       id: 2,
       name: "Getting Things Done",
       songs: 18,
-      cover: "/playlist-cover.jpg",
+      cover: "https://i.pinimg.com/736x/4e/ae/63/4eae638a97a66fcd5a22c172a94186c8.jpg",
     },
     {
       id: 3,
       name: "My Favorites",
       songs: 42,
-      cover: "/playlist-cover.jpg",
+      cover: "https://i.pinimg.com/736x/99/d9/5b/99d95bb1c81bf0e2b6a7a23d2ec19147.jpg",
     },
   ];
 
