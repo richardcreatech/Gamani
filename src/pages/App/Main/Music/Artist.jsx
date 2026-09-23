@@ -46,7 +46,7 @@ function Artist() {
               </article>
            
           </section>
-          {/* <AddToPlaylistPopup /> */}
+          <AddToPlaylistPopup />
     </section>
   )
 }
