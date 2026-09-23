@@ -1,5 +1,5 @@
-import { Navigate, Outlet, Route, Routes, useNavigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
+import { Navigate,  Route, Routes, useNavigate } from "react-router-dom";
+// import { useAuth } from "./context/AuthContext";
 import Login from "./components/Login";
 import Signup from "./components/SignUp";
 import Auth from "./pages/Auth/Auth";
@@ -10,6 +10,9 @@ import Spotify from "./pages/App/Main/Music/Spotify";
 import Connect_Spotify from "./pages/App/Main/Music/Connect_Spotify";
 import Spotify_Main from "./pages/App/Main/Music/Spotify_Main";
 import Discover from "./pages/App/Main/Music/Discover";
+import Playlist from "./pages/App/Main/Music/Playlist";
+import Listen from "./pages/App/Main/Music/Listen";
+import Artist from "./pages/App/Main/Music/Artist";
 
 
 
@@ -36,6 +39,9 @@ function App() {
 
             <Route path="spotify" element={<Spotify_Main />}>
               <Route path="" element={<Discover />} />
+              <Route path="playlists" element={<Playlist />} />
+              <Route path="listen" element={<Listen />} />
+              <Route path="artist" element={<Artist />} />
             </Route>
           </Route>
 

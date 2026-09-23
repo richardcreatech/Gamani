@@ -1106,17 +1106,12 @@ body {
 
   margin-bottom: 42px;
 
-  background: #8cecff;
-
-  border: 3px solid #111;
   border-radius: 14px;
 
   font-size: 21px;
   font-weight: 900;
 
   transform: rotate(-5deg);
-
-  box-shadow: 3px 3px 0 #111;
 }
 
 /* =========================================================
@@ -1629,4 +1624,1281 @@ body {
 
 #spotify_main #current_spotify_page .spotify-search input:focus::placeholder {
   color: #b1c0c3;
+}
+
+/* =========================
+   PLAYLIST PAGE
+========================= */
+
+#spotify_main #current_spotify_page #spotify_playlist {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-header {
+  margin-bottom: 42px;
+}
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-eyebrow {
+  margin: 0 0 8px;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+
+  color: #687b7f;
+}
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-header h1 {
+  margin: 0;
+
+  font-size: clamp(38px, 5vw, 54px);
+  line-height: 0.95;
+  letter-spacing: -2.5px;
+  font-weight: 900;
+
+  color: #111;
+}
+
+#spotify_main
+  #current_spotify_page
+  #spotify_playlist
+  .playlist-header
+  p:last-child {
+  max-width: 430px;
+  margin: 16px 0 0;
+
+  font-size: 14px;
+  line-height: 1.55;
+  color: #566568;
+}
+
+/* =========================
+   PLAYLIST SECTION
+========================= */
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-section {
+  margin-bottom: 48px;
+}
+
+/* Section heading */
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+
+  border-bottom: 3px solid #111;
+}
+
+#spotify_main
+  #current_spotify_page
+  #spotify_playlist
+  .playlist-section-header
+  span:first-child {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+
+  color: #687b7f;
+}
+
+#spotify_main
+  #current_spotify_page
+  #spotify_playlist
+  .playlist-section-header
+  h2 {
+  margin: 0;
+
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.8px;
+  font-weight: 850;
+
+  color: #111;
+}
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-count {
+  flex-shrink: 0;
+
+  padding: 6px 10px;
+
+  background: #fff;
+  border: 2px solid #111;
+  border-radius: 10px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  box-shadow: 2px 3px 0 #111;
+}
+
+/* =========================
+   PLAYLIST LIST
+========================= */
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+/* =========================
+   PLAYLIST ITEM
+========================= */
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-item {
+  min-height: 92px;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 10px 14px 10px 10px;
+
+  background: #fff;
+  border: 3px solid #111;
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  box-shadow: 4px 4px 0 #111;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-item:hover {
+  transform: translateY(-3px) rotate(-0.3deg);
+  box-shadow: 6px 7px 0 #111;
+}
+
+/* =========================
+   PLAYLIST COVER
+========================= */
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-cover {
+  width: 72px;
+  height: 72px;
+
+  flex-shrink: 0;
+
+  overflow: hidden;
+
+  background: #55dff5;
+  border: 3px solid #111;
+  border-radius: 13px;
+
+  box-shadow: 2px 2px 0 #111;
+}
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-cover img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 0.25s ease;
+}
+
+#spotify_main
+  #current_spotify_page
+  #spotify_playlist
+  .playlist-item:hover
+  .playlist-cover
+  img {
+  transform: scale(1.08) rotate(2deg);
+}
+
+/* =========================
+   PLAYLIST INFO
+========================= */
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-info h3 {
+  margin: 0;
+
+  overflow: hidden;
+
+  font-size: 17px;
+  line-height: 1.1;
+  font-weight: 850;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  color: #111;
+}
+
+#spotify_main #current_spotify_page #spotify_playlist .playlist-info span {
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #718184;
+}
+
+/* =========================
+   LITTLE GAMANI DETAIL
+========================= */
+
+#spotify_main
+  #current_spotify_page
+  #spotify_playlist
+  .playlist-item:nth-child(2n) {
+  border-radius: 14px 20px 17px 19px;
+}
+
+#spotify_main
+  #current_spotify_page
+  #spotify_playlist
+  .playlist-item:nth-child(3n) {
+  border-radius: 20px 15px 18px 14px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+  #spotify_main #current_spotify_page #spotify_playlist {
+    padding-bottom: 30px;
+  }
+
+  #spotify_main #current_spotify_page #spotify_playlist .playlist-header {
+    margin-bottom: 32px;
+  }
+
+  #spotify_main #current_spotify_page #spotify_playlist .playlist-header h1 {
+    font-size: 42px;
+  }
+
+  #spotify_main
+    #current_spotify_page
+    #spotify_playlist
+    .playlist-section-header
+    h2 {
+    font-size: 19px;
+  }
+
+  #spotify_main #current_spotify_page #spotify_playlist .playlist-count {
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+
+  #spotify_main #current_spotify_page #spotify_playlist .playlist-item {
+    min-height: 78px;
+    gap: 13px;
+    padding: 8px 10px 8px 8px;
+  }
+
+  #spotify_main #current_spotify_page #spotify_playlist .playlist-cover {
+    width: 60px;
+    height: 60px;
+  }
+
+  #spotify_main #current_spotify_page #spotify_playlist .playlist-info h3 {
+    font-size: 15px;
+  }
+
+  #spotify_main #current_spotify_page #spotify_playlist .playlist-info span {
+    font-size: 10px;
+  }
+}
+
+/* =========================
+   LISTEN PAGE
+========================= */
+
+#spotify_main #current_spotify_page #listen_page {
+  width: 100%;
+  max-width: 1150px;
+  min-height: 100%;
+
+  margin: 0 auto;
+  padding: 15px 0 50px;
+  margin-bottom: 54px;
+  display: flex;
+  align-items: center;
+}
+
+/* =========================
+   PLAYER AREA
+========================= */
+
+#spotify_main #current_spotify_page #listen_page .player-area {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 70px;
+}
+
+/* =========================
+   GAMEPAD
+========================= */
+
+#spotify_main #current_spotify_page #listen_page .gamepad {
+  position: relative;
+
+  width: 500px;
+  min-height: 430px;
+
+  padding: 32px 38px 25px;
+
+  background: #ffffff;
+
+  border: 4px solid #111;
+  border-radius: 70px 70px 90px 90px;
+
+  box-shadow: 9px 10px 0 #111;
+
+  transform: rotate(-1deg);
+}
+
+/* =========================
+   SCREEN
+========================= */
+
+#spotify_main #current_spotify_page #listen_page .gamepad-screen {
+  position: relative;
+
+  width: 100%;
+  height: 255px;
+
+  overflow: hidden;
+
+  background: #111;
+
+  border: 4px solid #111;
+  border-radius: 28px;
+
+  box-shadow: inset 0 0 0 4px #55dff5;
+}
+
+#spotify_main #current_spotify_page #listen_page .gamepad-screen img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  opacity: 0.9;
+
+  transition: transform 0.4s ease;
+}
+
+#spotify_main
+  #current_spotify_page
+  #listen_page
+  .gamepad:hover
+  .gamepad-screen
+  img {
+  transform: scale(1.04);
+}
+
+/* Song information sitting inside screen */
+
+#spotify_main #current_spotify_page #listen_page .screen-song {
+  position: absolute;
+
+  left: 16px;
+  bottom: 14px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 8px 12px;
+
+  background: #ffffff;
+
+  border: 2px solid #111;
+  border-radius: 10px;
+
+  box-shadow: 3px 3px 0 #111;
+}
+
+#spotify_main #current_spotify_page #listen_page .screen-song strong {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+#spotify_main #current_spotify_page #listen_page .screen-song span {
+  font-size: 10px;
+  font-weight: 600;
+
+  color: #667477;
+}
+
+/* =========================
+   GAMEPAD CONTROLS
+========================= */
+
+#spotify_main #current_spotify_page #listen_page .gamepad-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+
+  margin-top: 24px;
+}
+
+/* Main red button */
+
+#spotify_main #current_spotify_page #listen_page .play-button {
+  width: 66px;
+  height: 66px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 4px solid #111;
+  border-radius: 50%;
+
+  background: #ff4d5a;
+
+  color: #111;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  box-shadow: 4px 5px 0 #111;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+#spotify_main #current_spotify_page #listen_page .play-button:hover {
+  transform: translateY(-2px);
+}
+
+#spotify_main #current_spotify_page #listen_page .play-button:active {
+  transform: translateY(3px);
+  box-shadow: 1px 2px 0 #111;
+}
+
+/* Previous / next */
+
+#spotify_main #current_spotify_page #listen_page .skip-button {
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 3px solid #111;
+  border-radius: 50%;
+
+  background: #55dff5;
+
+  color: #111;
+
+  cursor: pointer;
+
+  box-shadow: 3px 3px 0 #111;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+#spotify_main #current_spotify_page #listen_page .skip-button:hover {
+  transform: rotate(-6deg) translateY(-2px);
+}
+
+#spotify_main #current_spotify_page #listen_page .skip-button:active {
+  transform: translateY(2px);
+  box-shadow: 1px 1px 0 #111;
+}
+
+/* =========================
+   SQUIGGLY PROGRESS
+========================= */
+
+#spotify_main #current_spotify_page #listen_page .music-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+#spotify_main #current_spotify_page #listen_page .progress-time {
+  min-width: 28px;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  color: #687b7f;
+}
+
+#spotify_main #current_spotify_page #listen_page .progress-time:last-child {
+  text-align: right;
+}
+
+/* The actual squiggly track */
+
+#spotify_main #current_spotify_page #listen_page .squiggly-progress {
+  position: relative;
+
+  flex: 1;
+  height: 18px;
+
+  overflow: hidden;
+
+  cursor: pointer;
+}
+
+/* Black squiggly line */
+
+#spotify_main #current_spotify_page #listen_page .squiggly-progress::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 7px;
+
+  height: 5px;
+
+  background: #111;
+
+  border-radius: 50%;
+
+  transform: rotate(-1deg);
+}
+
+/* Cyan progress */
+
+#spotify_main #current_spotify_page #listen_page .progress-fill {
+  position: absolute;
+
+  left: 0;
+  top: 6px;
+
+  width: 35%;
+  height: 7px;
+
+  background: #55dff5;
+
+  border: 2px solid #111;
+  border-radius: 50%;
+
+  z-index: 2;
+}
+
+/* Little knob */
+
+#spotify_main #current_spotify_page #listen_page .progress-knob {
+  position: absolute;
+
+  left: 35%;
+  top: 2px;
+
+  width: 15px;
+  height: 15px;
+
+  background: #ff4d5a;
+
+  border: 3px solid #111;
+  border-radius: 50%;
+
+  z-index: 3;
+}
+
+/* =========================
+   BOTTOM
+========================= */
+
+#spotify_main #current_spotify_page #listen_page .gamepad-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 16px;
+}
+
+#spotify_main #current_spotify_page #listen_page .gamepad-bottom button {
+  width: 30px;
+  height: 30px;
+
+  border: 2px solid #111;
+  border-radius: 50%;
+
+  background: #f2f2f2;
+
+  cursor: pointer;
+}
+
+#spotify_main #current_spotify_page #listen_page .gamepad-bottom span {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+
+  color: #899497;
+}
+
+/* =========================
+   QUEUE
+========================= */
+
+#spotify_main #current_spotify_page #listen_page .listen-queue {
+  width: 250px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-heading {
+  margin-bottom: 6px;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-heading span {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+
+  color: #687b7f;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-heading h2 {
+  margin: 5px 0 0;
+
+  font-size: 23px;
+  line-height: 1;
+
+  letter-spacing: -1px;
+}
+
+/* =========================
+   QUEUE SONG
+========================= */
+
+#spotify_main #current_spotify_page #listen_page .queue-song {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 8px 11px;
+
+  background: #ffffff;
+
+  border: 3px solid #111;
+  border-radius: 19px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  box-shadow: 3px 4px 0 #111;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-song:hover {
+  transform: translateX(5px) rotate(1deg);
+  box-shadow: 5px 5px 0 #111;
+}
+
+/* Make them cloud-ish */
+
+#spotify_main #current_spotify_page #listen_page .queue-song:nth-child(2) {
+  border-radius: 22px 28px 18px 25px;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-song:nth-child(3) {
+  border-radius: 28px 19px 25px 20px;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-song:nth-child(4) {
+  border-radius: 19px 26px 22px 28px;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-song img {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  object-fit: cover;
+
+  border: 2px solid #111;
+  border-radius: 14px;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-song span {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-song strong {
+  overflow: hidden;
+
+  font-size: 12px;
+  font-weight: 850;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#spotify_main #current_spotify_page #listen_page .queue-song small {
+  font-size: 9px;
+  font-weight: 600;
+
+  color: #7b898b;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  #spotify_main #current_spotify_page #listen_page .player-area {
+    flex-direction: column;
+    gap: 45px;
+  }
+
+  #spotify_main #current_spotify_page #listen_page .listen-queue {
+    width: min(100%, 500px);
+  }
+}
+
+@media (max-width: 560px) {
+  #spotify_main #current_spotify_page #listen_page .gamepad {
+    width: 100%;
+    min-height: 380px;
+
+    padding: 22px;
+
+    border-radius: 45px;
+  }
+
+  #spotify_main #current_spotify_page #listen_page .gamepad-screen {
+    height: 210px;
+  }
+
+  #spotify_main #current_spotify_page #listen_page .gamepad-controls {
+    gap: 20px;
+  }
+
+  #spotify_main #current_spotify_page #listen_page .play-button {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+/* =========================
+   ARTIST PAGE
+========================= */
+
+#spotify_main #current_spotify_page #artist_page {
+  width: 100%;
+  max-width: 1150px;
+  min-height: 100%;
+
+  margin: 0 auto;
+  padding: 10px 0 50px;
+
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 45px;
+  align-items: start;
+}
+
+/* =========================
+   ARTIST PROFILE
+========================= */
+
+#spotify_main #current_spotify_page #artist_page #the_arist {
+  position: sticky;
+  top: 20px;
+
+  padding: 22px 20px 25px;
+
+  background: #ffffff;
+
+  border-radius: 30px 25px 32px 24px;
+
+
+  text-align: center;
+}
+
+/* Artist picture */
+
+#spotify_main #current_spotify_page #artist_page #the_arist img {
+  width: 185px;
+  height: 185px;
+
+  display: block;
+
+  margin: 0 auto 18px;
+
+  object-fit: cover;
+
+  border: 4px solid #111;
+  border-radius: 48% 52% 45% 55%;
+
+  background: #55dff5;
+
+  box-shadow: 4px 4px 0 #111;
+}
+
+/* Artist name */
+
+#spotify_main #current_spotify_page #artist_page #the_arist span {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+
+  color: #111;
+}
+
+/* About */
+
+#spotify_main #current_spotify_page #artist_page #the_arist .about_artist {
+  margin: 0;
+
+  font-size: 11px;
+  line-height: 1.6;
+  font-weight: 600;
+
+  color: #687b7f;
+}
+
+/* =========================
+   SONG GRID
+========================= */
+
+#spotify_main #current_spotify_page #artist_page #artists_songs {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 22px;
+}
+
+/* =========================
+   SONG CARD
+========================= */
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .an_artists_song {
+  min-width: 0;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 3px solid #111;
+  border-radius: 22px;
+
+  box-shadow: 4px 5px 0 #111;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .an_artists_song:hover {
+  transform: translateY(-4px) rotate(-0.5deg);
+  box-shadow: 6px 8px 0 #111;
+}
+
+/* Slightly weird Gamani shapes */
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .an_artists_song:nth-child(2n) {
+  border-radius: 25px 18px 22px 28px;
+}
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .an_artists_song:nth-child(3n) {
+  border-radius: 18px 27px 25px 20px;
+}
+
+/* =========================
+   SONG COVER
+========================= */
+
+#spotify_main #current_spotify_page #artist_page #artists_songs .song_cover {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 1 / 1;
+
+  overflow: hidden;
+
+  background: #55dff5;
+}
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .song_cover
+  img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 0.3s ease;
+}
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .an_artists_song:hover
+  .song_cover
+  img {
+  transform: scale(1.06);
+}
+
+/* =========================
+   SONG INFORMATION
+========================= */
+
+#spotify_main #current_spotify_page #artist_page #artists_songs .song_info {
+  position: relative;
+
+  min-height: 72px;
+
+  padding: 12px 48px 12px 13px;
+}
+
+#spotify_main #current_spotify_page #artist_page #artists_songs .song_name {
+  margin: 0 0 5px;
+
+  overflow: hidden;
+
+  font-size: 14px;
+  line-height: 1.15;
+  font-weight: 900;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  color: #111;
+}
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .song_something {
+  margin: 0;
+
+  overflow: hidden;
+
+  font-size: 10px;
+  line-height: 1.3;
+  font-weight: 600;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  color: #718184;
+}
+
+/* =========================
+   ADD TO PLAYLIST
+========================= */
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .add_to_playlist {
+  position: absolute;
+
+  top: 50%;
+  right: 11px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-50%);
+
+  background: #55dff5;
+
+  border: 2px solid #111;
+  border-radius: 50%;
+
+  font-size: 12px;
+
+  color: #111;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+#spotify_main
+  #current_spotify_page
+  #artist_page
+  #artists_songs
+  .an_artists_song:hover
+  .add_to_playlist {
+  transform: translateY(-50%) rotate(8deg) scale(1.08);
+  background: #1ed760;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+  #spotify_main #current_spotify_page #artist_page {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  #spotify_main #current_spotify_page #artist_page #artists_songs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #spotify_main #current_spotify_page #artist_page #the_arist img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+  #spotify_main #current_spotify_page #artist_page {
+    display: block;
+
+    padding: 5px 0 30px;
+  }
+
+  /* Artist information comes first */
+
+  #spotify_main #current_spotify_page #artist_page #the_arist {
+    position: relative;
+    top: auto;
+
+    width: 100%;
+
+    margin-bottom: 28px;
+    padding: 18px 18px 22px;
+
+    border-radius: 28px;
+  }
+
+  #spotify_main #current_spotify_page #artist_page #the_arist img {
+    width: 145px;
+    height: 145px;
+
+    margin-bottom: 14px;
+  }
+
+  #spotify_main #current_spotify_page #artist_page #the_arist span {
+    font-size: 17px;
+  }
+
+  /* Songs become one vertical feed */
+
+  #spotify_main #current_spotify_page #artist_page #artists_songs {
+    display: flex;
+    flex-direction: column;
+
+    gap: 22px;
+  }
+
+  /* Large, immersive mobile song cards */
+
+  #spotify_main
+    #current_spotify_page
+    #artist_page
+    #artists_songs
+    .an_artists_song {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 420px;
+
+    border-radius: 28px;
+
+    box-shadow: 4px 5px 0 #111;
+  }
+
+  #spotify_main #current_spotify_page #artist_page #artists_songs .song_cover {
+    position: absolute;
+    inset: 0;
+
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  #spotify_main
+    #current_spotify_page
+    #artist_page
+    #artists_songs
+    .song_cover
+    img {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Dark-ish readability layer */
+
+  #spotify_main
+    #current_spotify_page
+    #artist_page
+    #artists_songs
+    .song_cover::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.72),
+      rgba(0, 0, 0, 0.05) 55%,
+      transparent
+    );
+  }
+
+  /* Info sits over the image */
+
+  #spotify_main #current_spotify_page #artist_page #artists_songs .song_info {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    min-height: auto;
+
+    padding: 25px 60px 22px 18px;
+
+    z-index: 2;
+  }
+
+  #spotify_main #current_spotify_page #artist_page #artists_songs .song_name {
+    margin-bottom: 5px;
+
+    font-size: 18px;
+
+    color: #ffffff;
+  }
+
+  #spotify_main
+    #current_spotify_page
+    #artist_page
+    #artists_songs
+    .song_something {
+    font-size: 11px;
+
+    color: #dce5e7;
+  }
+
+  /* Add button becomes more visible */
+
+  #spotify_main
+    #current_spotify_page
+    #artist_page
+    #artists_songs
+    .add_to_playlist {
+    top: auto;
+    right: 17px;
+    bottom: 20px;
+
+    width: 38px;
+    height: 38px;
+
+    background: #55dff5;
+
+    border-width: 3px;
+
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width: 430px) {
+  #spotify_main #current_spotify_page #artist_page #the_arist img {
+    width: 125px;
+    height: 125px;
+  }
+
+  #spotify_main
+    #current_spotify_page
+    #artist_page
+    #artists_songs
+    .an_artists_song {
+    min-height: 390px;
+  }
 }
