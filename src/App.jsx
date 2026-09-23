@@ -8,12 +8,10 @@ import Home from "./pages/App/Home";
 // import Mail from "./pages/App/Main/Mail/Mail";
 import Spotify from "./pages/App/Main/Music/Spotify";
 import Connect_Spotify from "./pages/App/Main/Music/Connect_Spotify";
+import Spotify_Main from "./pages/App/Main/Music/Spotify_Main";
+import Discover from "./pages/App/Main/Music/Discover";
 
-function ProtectedRoute() {
-  const { user } = useAuth();
 
-  return user ? <Outlet /> : <Navigate to="/" replace />;
-}
 
 function SplashRoute() {
   const navigate = useNavigate();
@@ -31,14 +29,18 @@ function App() {
         <Route path="signup" element={<Signup />} />
       </Route>
 
-      <Route element={<ProtectedRoute />}>
         <Route path="/splash" element={<SplashRoute />} />
         <Route path="/app" element={<Home />}>
           <Route path="" element={<Spotify />}>
             <Route path="" element={<Connect_Spotify />} />
+
+            <Route path="spotify" element={<Spotify_Main />}>
+              <Route path="" element={<Discover />} />
+            </Route>
           </Route>
+
+          <Route path="*" element={<Navigate to="/app" replace />} />
         </Route>
-      </Route>
     </Routes>
   );
 }

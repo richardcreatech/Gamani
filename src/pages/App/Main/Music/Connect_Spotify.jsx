@@ -1,6 +1,6 @@
 function Connect_Spotify() {
   const connectSpotify = () => {
-    window.location.href = "http://127.0.0.1:3000/auth/spotify";
+    window.location.href = "/app/spotify";
   };
 
   return (
