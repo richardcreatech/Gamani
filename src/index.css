@@ -4351,10 +4351,7 @@ body {
 ========================= */
 
 @media (max-width: 700px) {
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page {
+  #spotify_main #current_spotify_page #view_playlist_page {
     width: 100%;
 
     margin-bottom: 180px;
@@ -4363,13 +4360,9 @@ body {
     align-items: flex-start;
   }
 
-
   /* Scrapbook becomes vertical */
 
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .scrapbook {
+  #spotify_main #current_spotify_page #view_playlist_page .scrapbook {
     width: 100%;
 
     display: flex;
@@ -4379,15 +4372,11 @@ body {
     box-shadow: 5px 6px 0 #111;
   }
 
-
   /* =========================
      PLAYLIST INFO
   ========================= */
 
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  #current_playlist {
+  #spotify_main #current_spotify_page #view_playlist_page #current_playlist {
     min-height: auto;
 
     padding: 30px 22px 38px;
@@ -4398,11 +4387,7 @@ body {
     transform: none;
   }
 
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_picture {
+  #spotify_main #current_spotify_page #view_playlist_page .playlist_picture {
     width: min(68vw, 230px);
     height: min(68vw, 230px);
 
@@ -4410,42 +4395,29 @@ body {
     margin-bottom: 5px;
   }
 
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_details {
+  #spotify_main #current_spotify_page #view_playlist_page .playlist_details {
     margin-top: 28px;
   }
 
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_details h1 {
+  #spotify_main #current_spotify_page #view_playlist_page .playlist_details h1 {
     font-size: 34px;
     line-height: 0.95;
   }
 
-
   #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_description {
+    #current_spotify_page
+    #view_playlist_page
+    .playlist_description {
     max-width: 100%;
 
     margin-top: 14px;
   }
 
-
   /* =========================
      SONG SECTION
   ========================= */
 
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  #songs_in_playlist {
+  #spotify_main #current_spotify_page #view_playlist_page #songs_in_playlist {
     width: 100%;
 
     min-height: auto;
@@ -4453,43 +4425,34 @@ body {
     padding: 32px 18px 40px;
   }
 
-
   #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_songs_header {
+    #current_spotify_page
+    #view_playlist_page
+    .playlist_songs_header {
     margin-bottom: 18px;
   }
 
-
   #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_songs_header h2 {
+    #current_spotify_page
+    #view_playlist_page
+    .playlist_songs_header
+    h2 {
     font-size: 21px;
   }
 
-
   /* Let the entire list grow naturally */
 
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_song_list {
+  #spotify_main #current_spotify_page #view_playlist_page .playlist_song_list {
     max-height: none;
 
     overflow: visible;
   }
 
-
   /* =========================
      SONG ITEMS
   ========================= */
 
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_song {
+  #spotify_main #current_spotify_page #view_playlist_page .playlist_song {
     min-height: 66px;
 
     gap: 9px;
@@ -4499,40 +4462,32 @@ body {
     border-radius: 12px;
   }
 
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_song img {
+  #spotify_main #current_spotify_page #view_playlist_page .playlist_song img {
     width: 48px;
     height: 48px;
   }
 
-
   #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_song_info strong {
+    #current_spotify_page
+    #view_playlist_page
+    .playlist_song_info
+    strong {
     font-size: 12px;
   }
 
-
   #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_song_info span {
+    #current_spotify_page
+    #view_playlist_page
+    .playlist_song_info
+    span {
     font-size: 9px;
   }
-
 
   /* =========================
      HORIZONTAL SPIRAL
   ========================= */
 
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .scrapbook::before {
+  #spotify_main #current_spotify_page #view_playlist_page .scrapbook::before {
     top: 50%;
 
     left: 20px;
@@ -4541,61 +4496,40 @@ body {
     width: auto;
     height: 24px;
 
-    background:
-      radial-gradient(
-        circle,
-        #111 0 5px,
-        transparent 6px
-      )
-      left center / 38px 24px repeat-x;
+    background: radial-gradient(circle, #111 0 5px, transparent 6px) left
+      center / 38px 24px repeat-x;
 
     transform: translateY(-50%);
   }
-}
 
+  #spotify_main #current_spotify_page #view_playlist_page .scrapbook::before {
+    display: none;
+  }
+}
 
 /* =========================
    SMALL PHONES
 ========================= */
 
 @media (max-width: 430px) {
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page {
+  #spotify_main #current_spotify_page #view_playlist_page {
     margin-bottom: 100px;
   }
 
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  #current_playlist {
+  #spotify_main #current_spotify_page #view_playlist_page #current_playlist {
     padding: 26px 17px 34px;
   }
 
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_picture {
+  #spotify_main #current_spotify_page #view_playlist_page .playlist_picture {
     width: 190px;
     height: 190px;
   }
 
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  .playlist_details h1 {
+  #spotify_main #current_spotify_page #view_playlist_page .playlist_details h1 {
     font-size: 30px;
   }
 
-
-  #spotify_main
-  #current_spotify_page
-  #view_playlist_page
-  #songs_in_playlist {
+  #spotify_main #current_spotify_page #view_playlist_page #songs_in_playlist {
     padding: 28px 14px 35px;
   }
 }
