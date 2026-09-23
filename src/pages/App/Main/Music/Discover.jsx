@@ -3,8 +3,10 @@ import {
   faMagnifyingGlass
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
 function Discover() {
+   const navigate = useNavigate();
   return (
     <section id="discover_new_taste">
       <header className="discover-header">
@@ -43,7 +45,7 @@ function Discover() {
               alt="Artist"
             />
 
-            <button className="explore_artist">
+            <button onClick={() => navigate("/app/spotify/artist")}className="explore_artist">
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
             </button>
           </div>
@@ -60,7 +62,8 @@ function Discover() {
               alt="Artist"
             />
 
-            <button className="explore_artist">
+            <button  onClick={() => navigate("/app/spotify/artist")}
+ className="explore_artist">
               <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
             </button>
           </div>
