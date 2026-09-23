@@ -1,6 +1,6 @@
 import { faAdd } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import AddToPlaylistPopup from './AddToPlaylistPopup'
 
 function Artist() {
   return (
@@ -46,6 +46,7 @@ function Artist() {
               </article>
            
           </section>
+          <AddToPlaylistPopup />
     </section>
   )
 }
