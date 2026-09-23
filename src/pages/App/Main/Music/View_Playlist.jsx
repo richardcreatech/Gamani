@@ -12,7 +12,7 @@ function View_Playlist() {
 
           <div className="playlist_picture">
             <img
-              src="/playlist-cover.jpg"
+              src="https://i.pinimg.com/736x/74/9f/51/749f511267c72fe6a8888d8ce3a3f13f.jpg"
               alt="Playlist cover"
             />
           </div>
@@ -54,7 +54,7 @@ function View_Playlist() {
               <span className="song_number">01</span>
 
               <img
-                src="/album.jpg"
+                src="https://i.pinimg.com/1200x/8d/b0/30/8db0303af3cb78ec446db8e2d1d477be.jpg"
                 alt=""
               />
 
@@ -69,7 +69,7 @@ function View_Playlist() {
               <span className="song_number">02</span>
 
               <img
-                src="/album.jpg"
+                src="https://i.pinimg.com/736x/f3/16/46/f31646c66a2a8498017459f33407aec3.jpg"
                 alt=""
               />
 
@@ -84,7 +84,7 @@ function View_Playlist() {
               <span className="song_number">03</span>
 
               <img
-                src="/album.jpg"
+                src="https://i.pinimg.com/736x/c2/4d/d7/c24dd7900961edd8d9bb506b70dff313.jpg"
                 alt=""
               />
 
