@@ -13,6 +13,7 @@ import Discover from "./pages/App/Main/Music/Discover";
 import Playlist from "./pages/App/Main/Music/Playlist";
 import Listen from "./pages/App/Main/Music/Listen";
 import Artist from "./pages/App/Main/Music/Artist";
+import View_Playlist from "./pages/App/Main/Music/View_Playlist";
 
 
 
@@ -42,6 +43,7 @@ function App() {
               <Route path="playlists" element={<Playlist />} />
               <Route path="listen" element={<Listen />} />
               <Route path="artist" element={<Artist />} />
+              <Route path="view_playlist" element={<View_Playlist />} />
             </Route>
           </Route>
 
