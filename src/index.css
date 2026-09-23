@@ -4513,7 +4513,7 @@ body {
 
 @media (max-width: 430px) {
   #spotify_main #current_spotify_page #view_playlist_page {
-    margin-bottom: 250px;
+    margin-bottom: 200px;
   }
 
   #spotify_main #current_spotify_page #view_playlist_page #current_playlist {
