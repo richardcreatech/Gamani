@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./router/authRoute.js";
-// import SpotifyRouter from "./router/spotifyRouter.js";
+import spotifyRouter from "./router/spotifyRouter.js";
 
 const app = express();
 app.use(express.json());
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the server!");
 });
 app.use("/api/auth", authRouter);
-// app.use("/api/spotify", SpotifyRouter);
+app.use("/", spotifyRouter);
 
 const PORT = process.env.PORT || 3000;
 
