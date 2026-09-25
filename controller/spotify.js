@@ -1,7 +1,8 @@
+import axios from "axios";
 import crypto from "crypto";
 import dotenv from "dotenv";
 import pool from "../config/db.js";
-import axios from "axios";
+import { getSpotifyAccessToken } from "../util/spotifyAccess.js";
 
 dotenv.config();
 
@@ -27,10 +28,18 @@ export const connect_to_spotify = async (req, res) => {
 
     spotifyAuthUrl.searchParams.set("redirect_uri", process.env.REDIRECT_URI);
 
-    spotifyAuthUrl.searchParams.set(
-      "scope",
-      "user-read-private user-read-email user-read-currently-playing user-read-playback-state user-modify-playback-state",
-    );
+   spotifyAuthUrl.searchParams.set(
+  "scope",
+  `
+    user-read-private
+    user-read-email
+    user-read-currently-playing
+    user-read-playback-state
+    user-modify-playback-state
+    playlist-modify-public
+    playlist-modify-private
+  `.replace(/\s+/g, " ").trim()
+);
 
     spotifyAuthUrl.searchParams.set("state", state);
 
@@ -249,7 +258,7 @@ export const search_artists = async (req, res) => {
         FROM spotify_connections
         WHERE user_id = $1
       `,
-      [userId]
+      [userId],
     );
 
     if (result.rows.length === 0) {
@@ -261,20 +270,17 @@ export const search_artists = async (req, res) => {
     const accessToken = result.rows[0].access_token;
 
     // Ask Spotify to search for artists
-    const response = await axios.get(
-      "https://api.spotify.com/v1/search",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    const response = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
 
-        params: {
-          q: q.trim(),
-          type: "artist",
-          limit: 10,
-        },
-      }
-    );
+      params: {
+        q: q.trim(),
+        type: "artist",
+        limit: 10,
+      },
+    });
 
     // Return only the information your frontend needs
     const artists = response.data.artists.items.map((artist) => ({
@@ -288,11 +294,10 @@ export const search_artists = async (req, res) => {
     return res.status(200).json({
       artists,
     });
-
   } catch (error) {
     console.error(
       "Artist search error:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
 
     return res.status(500).json({
@@ -321,7 +326,7 @@ export const get_artist = async (req, res) => {
         FROM spotify_connections
         WHERE user_id = $1
       `,
-      [userId]
+      [userId],
     );
 
     if (result.rows.length === 0) {
@@ -336,7 +341,6 @@ export const get_artist = async (req, res) => {
       Authorization: `Bearer ${accessToken}`,
     };
 
-
     // =========================
     // GET ARTIST
     // =========================
@@ -345,9 +349,8 @@ export const get_artist = async (req, res) => {
       `https://api.spotify.com/v1/artists/${artistId}`,
       {
         headers: spotifyHeaders,
-      }
+      },
     );
-
 
     // =========================
     // GET ARTIST'S ALBUMS
@@ -362,9 +365,8 @@ export const get_artist = async (req, res) => {
           include_groups: "album,single",
           limit: 5,
         },
-      }
+      },
     );
-
 
     // =========================
     // GET TRACKS FROM ALBUMS
@@ -374,19 +376,15 @@ export const get_artist = async (req, res) => {
 
     const trackResponses = await Promise.all(
       albums.map((album) =>
-        axios.get(
-          `https://api.spotify.com/v1/albums/${album.id}/tracks`,
-          {
-            headers: spotifyHeaders,
+        axios.get(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
+          headers: spotifyHeaders,
 
-            params: {
-              limit: 50,
-            },
-          }
-        )
-      )
+          params: {
+            limit: 50,
+          },
+        }),
+      ),
     );
-
 
     // =========================
     // BUILD SONG LIST
@@ -399,11 +397,10 @@ export const get_artist = async (req, res) => {
       const album = albums[i];
 
       for (const track of tracks) {
-
         // Make sure the artist is actually one
         // of the artists on the track
         const belongsToArtist = track.artists.some(
-          (artist) => artist.id === artistId
+          (artist) => artist.id === artistId,
         );
 
         if (!belongsToArtist) {
@@ -416,25 +413,19 @@ export const get_artist = async (req, res) => {
           album: album.name,
           albumCover: album.images?.[0]?.url || null,
           durationMs: track.duration_ms,
-          spotifyUrl:
-            track.external_urls?.spotify || null,
+          spotifyUrl: track.external_urls?.spotify || null,
           uri: track.uri,
         });
       }
     }
 
-
     // Remove duplicate songs
     const uniqueSongs = Array.from(
-      new Map(
-        songs.map((song) => [song.id, song])
-      ).values()
+      new Map(songs.map((song) => [song.id, song])).values(),
     );
-
 
     // Your UI currently needs about 9 songs
     const limitedSongs = uniqueSongs.slice(0, 9);
-
 
     // =========================
     // SEND CLEAN RESPONSE
@@ -444,11 +435,9 @@ export const get_artist = async (req, res) => {
       artist: {
         id: artistResponse.data.id,
         name: artistResponse.data.name,
-        image:
-          artistResponse.data.images?.[0]?.url || null,
+        image: artistResponse.data.images?.[0]?.url || null,
         genres: artistResponse.data.genres || [],
-        spotifyUrl:
-          artistResponse.data.external_urls?.spotify || null,
+        spotifyUrl: artistResponse.data.external_urls?.spotify || null,
 
         // Spotify does not provide an artist biography
         bio: null,
@@ -456,15 +445,630 @@ export const get_artist = async (req, res) => {
 
       songs: limitedSongs,
     });
+  } catch (error) {
+    console.error("Get artist error:", error.response?.data || error.message);
+
+    return res.status(500).json({
+      message: "Unable to get artist information.",
+    });
+  }
+};
+
+export const search_artist_song = async (req, res) => {
+  try {
+    const { artistId } = req.params;
+    const { q } = req.query;
+
+    if (!artistId) {
+      return res.status(400).json({
+        message: "Artist ID is required.",
+      });
+    }
+
+    if (!q || !q.trim()) {
+      return res.status(400).json({
+        message: "Song search is required.",
+      });
+    }
+
+    const userId = req.user.id;
+
+    const result = await pool.query(
+      `
+        SELECT access_token
+        FROM spotify_connections
+        WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Spotify account is not connected.",
+      });
+    }
+
+    const accessToken = result.rows[0].access_token;
+
+    /*
+      First get the artist so we know the artist's name.
+    */
+    const artistResponse = await axios.get(
+      `https://api.spotify.com/v1/artists/${artistId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    const artistName = artistResponse.data.name;
+
+    /*
+      Now search Spotify for tracks by that artist.
+    */
+    const searchResponse = await axios.get(
+      "https://api.spotify.com/v1/search",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          q: `artist:"${artistName}" track:"${q.trim()}"`,
+          type: "track",
+          limit: 10,
+        },
+      },
+    );
+
+    /*
+      Only keep tracks whose Spotify artist ID
+      actually matches the artist being viewed.
+    */
+    const songs = searchResponse.data.tracks.items
+      .filter((track) => track.artists.some((artist) => artist.id === artistId))
+      .map((track) => ({
+        id: track.id,
+        name: track.name,
+        album: track.album.name,
+        albumCover: track.album.images?.[0]?.url || null,
+        durationMs: track.duration_ms,
+        spotifyUrl: track.external_urls?.spotify || null,
+        uri: track.uri,
+      }));
+
+    return res.status(200).json({
+      songs,
+    });
+  } catch (error) {
+    console.error(
+      "Artist song search error:",
+      error.response?.data || error.message,
+    );
+
+    return res.status(500).json({
+      message: "Unable to search for this artist's songs.",
+    });
+  }
+};
+
+export const get_currently_playing = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const accessToken = await getSpotifyAccessToken(userId);
+
+    const response = await axios.get(
+      "https://api.spotify.com/v1/me/player/currently-playing",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    // Spotify can return 204 when there is nothing currently playing
+    if (response.status === 204 || !response.data) {
+      return res.status(200).json({
+        playing: false,
+        track: null,
+      });
+    }
+
+    const data = response.data;
+
+    if (data.currently_playing_type !== "track") {
+      return res.status(200).json({
+        playing: false,
+        track: null,
+      });
+    }
+
+    const track = data.item;
+
+    return res.status(200).json({
+      playing: data.is_playing,
+      progressMs: data.progress_ms,
+      track: {
+        id: track.id,
+        name: track.name,
+        artists: track.artists.map((artist) => ({
+          id: artist.id,
+          name: artist.name,
+        })),
+        album: track.album.name,
+        albumCover: track.album.images?.[0]?.url || null,
+        durationMs: track.duration_ms,
+        uri: track.uri,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Get currently playing error:",
+      error.response?.data || error.message,
+    );
+
+    return res.status(500).json({
+      message: "Unable to get current playback.",
+    });
+  }
+};
+
+export const skip_previous = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const accessToken = await getSpotifyAccessToken(userId);
+
+    await axios.post("https://api.spotify.com/v1/me/player/previous", null, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error(
+      "Skip previous error:",
+      error.response?.data || error.message,
+    );
+
+    return res.status(500).json({
+      message: "Unable to play the previous song.",
+    });
+  }
+};
+
+export const seek_track = async (req, res) => {
+  try {
+    const { positionMs } = req.body;
+
+    if (typeof positionMs !== "number" || positionMs < 0) {
+      return res.status(400).json({
+        message: "A valid position is required.",
+      });
+    }
+
+    const userId = req.user.id;
+
+    const accessToken = await getSpotifyAccessToken(userId);
+
+    await axios.put("https://api.spotify.com/v1/me/player/seek", null, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+
+      params: {
+        position_ms: Math.floor(positionMs),
+      },
+    });
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error("Seek error:", error.response?.data || error.message);
+
+    return res.status(500).json({
+      message: "Unable to change playback position.",
+    });
+  }
+};
+
+export const mute_playback = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const accessToken = await getSpotifyAccessToken(userId);
+
+    await axios.put("https://api.spotify.com/v1/me/player/volume", null, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+
+      params: {
+        volume_percent: 0,
+      },
+    });
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error(
+      "Mute playback error:",
+      error.response?.data || error.message,
+    );
+
+    return res.status(500).json({
+      message: "Unable to mute playback.",
+    });
+  }
+};
+
+export const skip_next = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const accessToken = await getSpotifyAccessToken(userId);
+
+    await axios.post("https://api.spotify.com/v1/me/player/next", null, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error("Skip next error:", error.response?.data || error.message);
+
+    return res.status(500).json({
+      message: "Unable to play the next song.",
+    });
+  }
+};
+
+export const get_playback_queue = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const result = await pool.query(
+      `
+        SELECT access_token
+        FROM spotify_connections
+        WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Spotify account is not connected.",
+      });
+    }
+
+    const accessToken = result.rows[0].access_token;
+
+    const response = await axios.get(
+      "https://api.spotify.com/v1/me/player/queue",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    const nextSongs = response.data.queue
+      .filter((item) => item.type === "track")
+      .slice(0, 3)
+      .map((track) => ({
+        id: track.id,
+        name: track.name,
+        artist: track.artists.map((artist) => artist.name).join(", "),
+        album: track.album.name,
+        albumCover: track.album.images?.[0]?.url || null,
+        uri: track.uri,
+      }));
+
+    return res.status(200).json({
+      songs: nextSongs,
+    });
+  } catch (error) {
+    console.error(
+      "Get playback queue error:",
+      error.response?.data || error.message,
+    );
+
+    return res.status(500).json({
+      message: "Unable to get playback queue.",
+    });
+  }
+};
+
+export const play_song = async (req, res) => {
+  try {
+    const { uri } = req.body;
+
+    if (!uri) {
+      return res.status(400).json({
+        message: "Song URI is required.",
+      });
+    }
+
+    if (!uri.startsWith("spotify:track:")) {
+      return res.status(400).json({
+        message: "Invalid Spotify track URI.",
+      });
+    }
+
+    const userId = req.user.id;
+
+    const result = await pool.query(
+      `
+        SELECT access_token
+        FROM spotify_connections
+        WHERE user_id = $1
+      `,
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Spotify account is not connected.",
+      });
+    }
+
+    const accessToken = result.rows[0].access_token;
+
+    await axios.put(
+      "https://api.spotify.com/v1/me/player/play",
+      {
+        uris: [uri],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return res.sendStatus(204);
 
   } catch (error) {
     console.error(
-      "Get artist error:",
+      "Play song error:",
       error.response?.data || error.message
     );
 
     return res.status(500).json({
-      message: "Unable to get artist information.",
+      message: "Unable to play song.",
+    });
+  }
+};
+
+export const add_song_to_playlist = async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const { trackUri } = req.body;
+
+    if (!playlistId) {
+      return res.status(400).json({
+        message: "Playlist ID is required.",
+      });
+    }
+
+    if (!trackUri) {
+      return res.status(400).json({
+        message: "Track URI is required.",
+      });
+    }
+
+    if (!trackUri.startsWith("spotify:track:")) {
+      return res.status(400).json({
+        message: "Invalid Spotify track URI.",
+      });
+    }
+
+    // Logged-in Gamani user
+    const userId = req.user.id;
+
+    // Get this user's Spotify access token
+    const result = await pool.query(
+      `
+        SELECT access_token
+        FROM spotify_connections
+        WHERE user_id = $1
+      `,
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Spotify account is not connected.",
+      });
+    }
+
+    const accessToken = result.rows[0].access_token;
+
+    // Add the song to the Spotify playlist
+    const response = await axios.post(
+      `https://api.spotify.com/v1/playlists/${playlistId}/items`,
+      {
+        uris: [trackUri],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return res.status(201).json({
+      message: "Song added to playlist.",
+      snapshotId: response.data.snapshot_id,
+    });
+
+  } catch (error) {
+    console.error(
+      "Add song to playlist error:",
+      error.response?.data || error.message
+    );
+
+    return res.status(500).json({
+      message: "Unable to add song to playlist.",
+    });
+  }
+};
+
+export const get_playback_state = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const result = await pool.query(
+      `
+        SELECT access_token
+        FROM spotify_connections
+        WHERE user_id = $1
+      `,
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Spotify account is not connected.",
+      });
+    }
+
+    const accessToken = result.rows[0].access_token;
+
+    const response = await axios.get(
+      "https://api.spotify.com/v1/me/player",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return res.status(200).json(response.data);
+
+  } catch (error) {
+    console.error(
+      "Playback state error:",
+      error.response?.data || error.message
+    );
+
+    return res.status(
+      error.response?.status || 500
+    ).json({
+      message:
+        error.response?.data?.error?.message ||
+        "Unable to get playback state.",
+    });
+  }
+};
+
+export const play_queue_song = async (req, res) => {
+  try {
+    const { uri } = req.body;
+
+    if (!uri) {
+      return res.status(400).json({
+        message: "Song URI is required.",
+      });
+    }
+
+    if (!uri.startsWith("spotify:track:")) {
+      return res.status(400).json({
+        message: "Invalid Spotify track URI.",
+      });
+    }
+
+    const userId = req.user.id;
+
+    const accessToken = await getSpotifyAccessToken(userId);
+
+    const spotifyHeaders = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    };
+
+    // --------------------------------
+    // 1. Get the REAL Spotify queue
+    // --------------------------------
+
+    const queueResponse = await axios.get(
+      "https://api.spotify.com/v1/me/player/queue",
+      {
+        headers: spotifyHeaders,
+      }
+    );
+
+    const spotifyQueue = queueResponse.data.queue
+      .filter((item) => item.type === "track");
+
+    // --------------------------------
+    // 2. Find the song user selected
+    // --------------------------------
+
+    const selectedIndex = spotifyQueue.findIndex(
+      (track) => track.uri === uri
+    );
+
+    if (selectedIndex === -1) {
+      return res.status(404).json({
+        message: "Song is not in the current queue.",
+      });
+    }
+
+    // Everything AFTER the selected song
+    const remainingSongs = spotifyQueue
+      .slice(selectedIndex + 1)
+      .map((track) => track.uri);
+
+    // --------------------------------
+    // 3. Play the selected song
+    // --------------------------------
+
+    await axios.put(
+      "https://api.spotify.com/v1/me/player/play",
+      {
+        uris: [uri],
+      },
+      {
+        headers: spotifyHeaders,
+      }
+    );
+
+    // --------------------------------
+    // 4. Rebuild the queue after it
+    // --------------------------------
+
+    for (const nextUri of remainingSongs) {
+      await axios.post(
+        "https://api.spotify.com/v1/me/player/queue",
+        null,
+        {
+          headers: spotifyHeaders,
+          params: {
+            uri: nextUri,
+          },
+        }
+      );
+    }
+
+    return res.sendStatus(204);
+
+  } catch (error) {
+    console.error(
+      "Play queue song error:",
+      error.response?.data || error.message
+    );
+
+    return res.status(
+      error.response?.status || 500
+    ).json({
+      message:
+        error.response?.data?.error?.message ||
+        "Unable to play queue song.",
     });
   }
 };
