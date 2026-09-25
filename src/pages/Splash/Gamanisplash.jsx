@@ -341,7 +341,6 @@ export default function GamaniSplash({ onComplete }) {
           ))}
         </svg>
 
-        <div className="gamani-splash__wordmark">GAMANI</div>
       </div>
     </div>
   );

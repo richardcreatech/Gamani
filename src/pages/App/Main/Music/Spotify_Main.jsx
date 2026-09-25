@@ -1,12 +1,11 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import logo from "../../../../../public/s_logo.png"
 import {
   faCompass,
   faMusic,
   faUser,
-  faVolume,
-  faPhoneAlt
+  faMobile
 } from "@fortawesome/free-solid-svg-icons";
 
 function Spotify_Main() {
@@ -17,7 +16,6 @@ function Spotify_Main() {
       </section>
 
       <aside id="spotify_navigation">
-        <div className="gamani-mark"><FontAwesomeIcon icon={faVolume}/></div>
 
         <nav>
       
@@ -33,13 +31,13 @@ function Spotify_Main() {
           </NavLink>
 
           <NavLink to="listen" className="spotify-nav-item">
-            <FontAwesomeIcon icon={faPhoneAlt} />
+            <FontAwesomeIcon icon={faMobile} />
             <span>Saved</span>
           </NavLink>
         </nav>
 
         <NavLink to="profile" className="spotify-nav-item spotify-nav-profile">
-          <FontAwesomeIcon icon={faUser} />
+       <img width={30} src={logo} alt="" />
           <span>Profile</span>
         </NavLink>
       </aside>
