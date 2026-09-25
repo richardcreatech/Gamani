@@ -17,6 +17,9 @@ function Listen() {
   const [error, setError] = useState("");
   const [queue, setQueue] = useState([]);
 
+  const [draggedSongId, setDraggedSongId] = useState(null);
+  const [dragOverSongId, setDragOverSongId] = useState(null);
+
   const BACKEND_URL = "http://127.0.0.1:3000";
 
   /* =========================
@@ -206,6 +209,67 @@ function Listen() {
   };
 
   /* =========================
+     DRAG TO REORDER
+  ========================= */
+
+  const handleDragStart = (event, song) => {
+    setDraggedSongId(song.id);
+    // Firefox requires data to be set for dragging to work at all
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", song.id);
+  };
+
+  const handleDragEnter = (event, song) => {
+    event.preventDefault();
+
+    if (song.id === draggedSongId) {
+      return;
+    }
+
+    setDragOverSongId(song.id);
+  };
+
+  const handleDragOver = (event) => {
+    // Required so onDrop actually fires
+    event.preventDefault();
+  };
+
+  const handleDrop = (event, targetSong) => {
+    event.preventDefault();
+
+    setQueue((currentQueue) => {
+      if (!draggedSongId || draggedSongId === targetSong.id) {
+        return currentQueue;
+      }
+
+      const fromIndex = currentQueue.findIndex(
+        (song) => song.id === draggedSongId,
+      );
+      const toIndex = currentQueue.findIndex(
+        (song) => song.id === targetSong.id,
+      );
+
+      if (fromIndex === -1 || toIndex === -1) {
+        return currentQueue;
+      }
+
+      const updatedQueue = [...currentQueue];
+      const [movedSong] = updatedQueue.splice(fromIndex, 1);
+      updatedQueue.splice(toIndex, 0, movedSong);
+
+      return updatedQueue;
+    });
+
+    setDraggedSongId(null);
+    setDragOverSongId(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedSongId(null);
+    setDragOverSongId(null);
+  };
+
+  /* =========================
      FORMAT TIME
   ========================= */
 
@@ -347,7 +411,19 @@ function Listen() {
           {queue.map((song) => (
             <button
               key={song.id}
-              className="queue-song"
+              className={`queue-song ${
+                draggedSongId === song.id ? "queue-song--dragging" : ""
+              } ${
+                dragOverSongId === song.id && draggedSongId !== song.id
+                  ? "queue-song--drag-over"
+                  : ""
+              }`}
+              draggable
+              onDragStart={(event) => handleDragStart(event, song)}
+              onDragEnter={(event) => handleDragEnter(event, song)}
+              onDragOver={handleDragOver}
+              onDrop={(event) => handleDrop(event, song)}
+              onDragEnd={handleDragEnd}
               onClick={() => playQueueSong(song.uri)}
             >
               <img src={song.albumCover} alt={song.album} />
