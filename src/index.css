@@ -1,3 +1,17 @@
+:root {
+  --background: #ffffff;
+  --text: #000000;
+  --surface: #ffffff;
+  --border: #000000;
+}
+
+:root.dark-mode {
+  --background: #000000;
+  --text: #ffffff;
+  --surface: #000000;
+  --border: #ffffff;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,15 +20,19 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #111;
+  background-color: var(--background);
+  color: var(--text);
   line-height: 1.5;
   overflow: hidden;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 #auth_page {
   min-height: 90vh;
   width: 100%;
-  background: #ffffff;
+  background-color: var(--background);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,14 +51,12 @@ body {
 }
 
 .auth_switch a {
-  color: #111;
+  color: var(--text);
   font-weight: 600;
 }
 
 .auth_form_page {
-  /* min-height: 100vh; */
   width: 100%;
-  /* padding: 32px 48px; */
   display: flex;
   flex-direction: column;
 }
@@ -98,8 +114,8 @@ body {
   border: none;
   border-radius: 10px;
 
-  background: #111;
-  color: white;
+  background-color: #000;
+  color: #fff;
 
   font: inherit;
   font-weight: 600;
@@ -368,7 +384,8 @@ body {
 
   box-sizing: border-box;
 
-  background: #ffffff;
+  /* background: #ffffff; */
+  background-color: var(--background);
 }
 
 /* Logo + application name */
@@ -436,17 +453,13 @@ body {
 /* Navigation pill */
 
 #footer nav {
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--background);
 
-  border: 1px solid #e5eaf2;
+  border: 1px solid rgba(128, 128, 128, 0.592);
 
-  border-radius: 22px;
+  border-radius: 8px;
 
   padding: 7px;
-
-  box-shadow:
-    0 8px 25px rgba(30, 50, 80, 0.08),
-    0 2px 8px rgba(30, 50, 80, 0.04);
 
   backdrop-filter: blur(10px);
 }
@@ -617,7 +630,7 @@ body {
   width: 180px;
   height: 70px;
 
-  background: #eaffff;
+  /* background: #eaffff; */
 
   border: 3px solid #101010;
   border-radius: 100px;
@@ -1089,8 +1102,7 @@ body {
 
   padding: 22px 10px;
 
-  background: #fff;
-
+  background: var(--background);
   border-right: 3px solid #111;
 }
 
@@ -1271,7 +1283,7 @@ body {
 #spotify_main #discover_new_taste .discover-header h1 {
   margin: 0;
 
-  color: #111;
+  color: var(--text);
 
   font-size: clamp(38px, 5vw, 58px);
   line-height: 0.95;
@@ -1941,7 +1953,7 @@ body {
 
   margin: 0 auto;
   padding: 15px 0 50px;
-  margin-bottom: 54px;
+  margin-bottom: 34px;
   display: flex;
   align-items: center;
 }
@@ -3880,13 +3892,10 @@ body {
 #spotify_main #current_spotify_page #view_playlist_page .scrapbook {
   position: relative;
 
-
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-
   border-radius: 12px;
-
 
   overflow: visible;
 }
@@ -3901,8 +3910,6 @@ body {
   min-height: 620px;
 
   padding: 40px;
-
-
 
   transform: rotate(-0.4deg);
 
@@ -4024,7 +4031,6 @@ body {
   min-height: 620px;
 
   padding: 40px 34px;
-
 }
 
 /* =========================
@@ -4494,8 +4500,6 @@ body {
 
     transform: translateY(-50%);
   }
-
-
 }
 
 /* =========================
@@ -4525,19 +4529,15 @@ body {
   }
 }
 
-  #spotify_main #current_spotify_page #view_playlist_page .scrapbook::before {
-    display: none;
-  }
+#spotify_main #current_spotify_page #view_playlist_page .scrapbook::before {
+  display: none;
+}
 
-  /* =========================
+/* =========================
    ARTIST SONG SEARCH
 ========================= */
 
-#spotify_main
-#current_spotify_page
-#artist_page
-#the_arist
-.search_for_song {
+#spotify_main #current_spotify_page #artist_page #the_arist .search_for_song {
   width: 100%;
 
   margin-top: 22px;
@@ -4561,12 +4561,11 @@ body {
     background 0.2s ease;
 }
 
-
 #spotify_main
-#current_spotify_page
-#artist_page
-#the_arist
-.search_for_song:focus-within {
+  #current_spotify_page
+  #artist_page
+  #the_arist
+  .search_for_song:focus-within {
   transform: translateY(-2px) rotate(-0.4deg);
 
   background: #ffffff;
@@ -4574,14 +4573,14 @@ body {
   box-shadow: 4px 5px 0 #111;
 }
 
-
 /* Search icon */
 
 #spotify_main
-#current_spotify_page
-#artist_page
-#the_arist
-.search_for_song svg {
+  #current_spotify_page
+  #artist_page
+  #the_arist
+  .search_for_song
+  svg {
   flex-shrink: 0;
 
   font-size: 12px;
@@ -4589,14 +4588,14 @@ body {
   color: #111;
 }
 
-
 /* Input */
 
 #spotify_main
-#current_spotify_page
-#artist_page
-#the_arist
-.search_for_song input {
+  #current_spotify_page
+  #artist_page
+  #the_arist
+  .search_for_song
+  input {
   width: 100%;
   min-width: 0;
 
@@ -4614,23 +4613,22 @@ body {
   font-weight: 650;
 }
 
-
 #spotify_main
-#current_spotify_page
-#artist_page
-#the_arist
-.search_for_song input::placeholder {
+  #current_spotify_page
+  #artist_page
+  #the_arist
+  .search_for_song
+  input::placeholder {
   color: #89979a;
 }
-
 
 /* Tiny Spotify/Gamani accent */
 
 #spotify_main
-#current_spotify_page
-#artist_page
-#the_arist
-.search_for_song::before {
+  #current_spotify_page
+  #artist_page
+  #the_arist
+  .search_for_song::before {
   content: "";
 
   width: 6px;
@@ -4642,4 +4640,22 @@ body {
 
   border: 2px solid #111;
   border-radius: 50%;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
 }

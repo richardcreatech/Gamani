@@ -177,9 +177,9 @@ function Listen() {
     }
   };
 
-  const playSong = async (uri) => {
+  const playQueueSong = async (uri) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/playback/play`, {
+      const response = await fetch(`${BACKEND_URL}/playback/queue/play`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -193,16 +193,15 @@ function Listen() {
       if (!response.ok) {
         const data = await response.json();
 
-        throw new Error(data.message || "Unable to play song.");
+        throw new Error(data.message || "Unable to play queue song.");
       }
 
-      // Give Spotify a moment to update
       setTimeout(() => {
         getCurrentTrack();
         getQueue();
       }, 500);
     } catch (error) {
-      console.error("Play song error:", error);
+      console.error("Play queue song error:", error);
     }
   };
 
@@ -349,7 +348,7 @@ function Listen() {
             <button
               key={song.id}
               className="queue-song"
-              onClick={() => playSong(song.uri)}
+              onClick={() => playQueueSong(song.uri)}
             >
               <img src={song.albumCover} alt={song.album} />
 

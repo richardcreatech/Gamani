@@ -1,8 +1,26 @@
+import { useState } from "react";
 import { FontAwesomeIcon as FontAwesome } from "@fortawesome/react-fontawesome";
-import { faSun, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSun,
+  faMoon,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+
 import logo from "./../assets/logo_2.png";
 
 function Header() {
+  const [darkMode, setDarkMode] = useState(
+    document.documentElement.classList.contains("dark-mode")
+  );
+
+  const toggleTheme = () => {
+    const newMode = !darkMode;
+
+    setDarkMode(newMode);
+
+    document.documentElement.classList.toggle("dark-mode", newMode);
+  };
+
   return (
     <header id="header">
       <div className="logo-container">
@@ -11,12 +29,17 @@ function Header() {
           alt="Gamani Logo"
           className="header__logo"
         />
-
-        {/* <span className="brand-name">Gamani</span> */}
       </div>
 
       <div className="me_links">
-        <FontAwesome icon={faSun} />
+        <span
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label="Toggle dark mode"
+        >
+          <FontAwesome icon={darkMode ? faMoon : faSun} />
+        </span>
+
         <FontAwesome icon={faUser} />
       </div>
     </header>
