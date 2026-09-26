@@ -4,10 +4,22 @@ import dotenv from "dotenv";
 import pool from "../config/db.js";
 import { getSpotifyAccessToken } from "../util/spotifyAccess.js";
 
+import { getRandomSeedArtist } from "./seedArtists.js";
+
 dotenv.config();
 
 export const connect_to_spotify = async (req, res) => {
   try {
+    const scope = [
+      "user-read-private",
+      "user-read-email",
+      "user-read-currently-playing",
+      "user-read-playback-state",
+      "user-modify-playback-state",
+      "playlist-read-private",
+      "playlist-modify-public",
+      "playlist-modify-private",
+    ].join(" ");
     const userId = req.user.id;
 
     const state = crypto.randomBytes(32).toString("hex");
@@ -28,18 +40,21 @@ export const connect_to_spotify = async (req, res) => {
 
     spotifyAuthUrl.searchParams.set("redirect_uri", process.env.REDIRECT_URI);
 
-   spotifyAuthUrl.searchParams.set(
-  "scope",
-  `
+    spotifyAuthUrl.searchParams.set(
+      "scope",
+      `
     user-read-private
     user-read-email
     user-read-currently-playing
     user-read-playback-state
     user-modify-playback-state
+    playlist-read-private
     playlist-modify-public
     playlist-modify-private
-  `.replace(/\s+/g, " ").trim()
-);
+  `
+        .replace(/\s+/g, " ")
+        .trim(),
+    );
 
     spotifyAuthUrl.searchParams.set("state", state);
 
@@ -191,19 +206,17 @@ export const discover_artists = async (req, res) => {
 
     const accessToken = result.rows[0].access_token;
 
-    // 3. Generate a random search term
-    const letters = "abcdefghijklmnopqrstuvwxyz";
+    // 3. Pick a fun, intentional seed artist instead of a random letter
+    const seedArtist = getRandomSeedArtist();
 
-    const randomLetter = letters[Math.floor(Math.random() * letters.length)];
-
-    // 4. Search Spotify
+    // 4. Search Spotify using the seed artist as the query
     const response = await axios.get("https://api.spotify.com/v1/search", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
 
       params: {
-        q: `artist:${randomLetter}`,
+        q: seedArtist,
         type: "artist",
         limit: 10,
       },
@@ -805,7 +818,7 @@ export const play_song = async (req, res) => {
         FROM spotify_connections
         WHERE user_id = $1
       `,
-      [userId]
+      [userId],
     );
 
     if (result.rows.length === 0) {
@@ -826,16 +839,12 @@ export const play_song = async (req, res) => {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     return res.sendStatus(204);
-
   } catch (error) {
-    console.error(
-      "Play song error:",
-      error.response?.data || error.message
-    );
+    console.error("Play song error:", error.response?.data || error.message);
 
     return res.status(500).json({
       message: "Unable to play song.",
@@ -843,53 +852,46 @@ export const play_song = async (req, res) => {
   }
 };
 
-export const add_song_to_playlist = async (req, res) => {
+export async function add_song_to_playlist(req, res) {
+  const userId = req.user.id;
+  const { playlistId } = req.params;
+  const { trackUri } = req.body;
+
+  // Validate playlist ID
+  if (!playlistId) {
+    return res.status(400).json({
+      message: "Playlist ID is required.",
+    });
+  }
+
+  // Validate track URI
+  if (!trackUri) {
+    return res.status(400).json({
+      message: "Track URI is required.",
+    });
+  }
+
+  if (!trackUri.startsWith("spotify:track:")) {
+    return res.status(400).json({
+      message: "Invalid Spotify track URI.",
+    });
+  }
+
   try {
-    const { playlistId } = req.params;
-    const { trackUri } = req.body;
+    // Get the user's current Spotify access token
+    const accessToken = await getSpotifyAccessToken(userId);
 
-    if (!playlistId) {
-      return res.status(400).json({
-        message: "Playlist ID is required.",
+    if (!accessToken) {
+      return res.status(401).json({
+        message: "Spotify is not connected.",
       });
     }
 
-    if (!trackUri) {
-      return res.status(400).json({
-        message: "Track URI is required.",
-      });
-    }
-
-    if (!trackUri.startsWith("spotify:track:")) {
-      return res.status(400).json({
-        message: "Invalid Spotify track URI.",
-      });
-    }
-
-    // Logged-in Gamani user
-    const userId = req.user.id;
-
-    // Get this user's Spotify access token
-    const result = await pool.query(
-      `
-        SELECT access_token
-        FROM spotify_connections
-        WHERE user_id = $1
-      `,
-      [userId]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        message: "Spotify account is not connected.",
-      });
-    }
-
-    const accessToken = result.rows[0].access_token;
-
-    // Add the song to the Spotify playlist
+    // Ask Spotify to add the track
     const response = await axios.post(
-      `https://api.spotify.com/v1/playlists/${playlistId}/items`,
+      `https://api.spotify.com/v1/playlists/${encodeURIComponent(
+        playlistId,
+      )}/items`,
       {
         uris: [trackUri],
       },
@@ -898,25 +900,28 @@ export const add_song_to_playlist = async (req, res) => {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     return res.status(201).json({
       message: "Song added to playlist.",
       snapshotId: response.data.snapshot_id,
     });
-
   } catch (error) {
     console.error(
       "Add song to playlist error:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
 
-    return res.status(500).json({
-      message: "Unable to add song to playlist.",
+    const spotifyStatus = error.response?.status;
+    const spotifyMessage =
+      error.response?.data?.error?.message || "Unable to add song to playlist.";
+
+    return res.status(spotifyStatus || 500).json({
+      message: spotifyMessage,
     });
   }
-};
+}
 
 export const get_playback_state = async (req, res) => {
   try {
@@ -928,7 +933,7 @@ export const get_playback_state = async (req, res) => {
         FROM spotify_connections
         WHERE user_id = $1
       `,
-      [userId]
+      [userId],
     );
 
     if (result.rows.length === 0) {
@@ -939,29 +944,22 @@ export const get_playback_state = async (req, res) => {
 
     const accessToken = result.rows[0].access_token;
 
-    const response = await axios.get(
-      "https://api.spotify.com/v1/me/player",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await axios.get("https://api.spotify.com/v1/me/player", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     return res.status(200).json(response.data);
-
   } catch (error) {
     console.error(
       "Playback state error:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
 
-    return res.status(
-      error.response?.status || 500
-    ).json({
+    return res.status(error.response?.status || 500).json({
       message:
-        error.response?.data?.error?.message ||
-        "Unable to get playback state.",
+        error.response?.data?.error?.message || "Unable to get playback state.",
     });
   }
 };
@@ -999,19 +997,18 @@ export const play_queue_song = async (req, res) => {
       "https://api.spotify.com/v1/me/player/queue",
       {
         headers: spotifyHeaders,
-      }
+      },
     );
 
-    const spotifyQueue = queueResponse.data.queue
-      .filter((item) => item.type === "track");
+    const spotifyQueue = queueResponse.data.queue.filter(
+      (item) => item.type === "track",
+    );
 
     // --------------------------------
     // 2. Find the song user selected
     // --------------------------------
 
-    const selectedIndex = spotifyQueue.findIndex(
-      (track) => track.uri === uri
-    );
+    const selectedIndex = spotifyQueue.findIndex((track) => track.uri === uri);
 
     if (selectedIndex === -1) {
       return res.status(404).json({
@@ -1035,7 +1032,7 @@ export const play_queue_song = async (req, res) => {
       },
       {
         headers: spotifyHeaders,
-      }
+      },
     );
 
     // --------------------------------
@@ -1043,32 +1040,62 @@ export const play_queue_song = async (req, res) => {
     // --------------------------------
 
     for (const nextUri of remainingSongs) {
-      await axios.post(
-        "https://api.spotify.com/v1/me/player/queue",
-        null,
-        {
-          headers: spotifyHeaders,
-          params: {
-            uri: nextUri,
-          },
-        }
-      );
+      await axios.post("https://api.spotify.com/v1/me/player/queue", null, {
+        headers: spotifyHeaders,
+        params: {
+          uri: nextUri,
+        },
+      });
     }
 
     return res.sendStatus(204);
-
   } catch (error) {
     console.error(
       "Play queue song error:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
 
-    return res.status(
-      error.response?.status || 500
-    ).json({
+    return res.status(error.response?.status || 500).json({
       message:
-        error.response?.data?.error?.message ||
-        "Unable to play queue song.",
+        error.response?.data?.error?.message || "Unable to play queue song.",
     });
   }
 };
+
+export async function get_user_playlists(req, res) {
+  const userId = req.user.id;
+
+  try {
+    const accessToken = await getSpotifyAccessToken(userId);
+
+    const response = await axios.get(
+      "https://api.spotify.com/v1/me/playlists?limit=50",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    const playlists = response.data.items.map((playlist) => ({
+      id: playlist.id,
+      name: playlist.name,
+      songs: playlist.items.total,
+      cover: playlist.images?.[0]?.url || null,
+    }));
+
+    return res.status(200).json({
+      playlists,
+    });
+  } catch (error) {
+    console.error(
+      "Get user playlists error:",
+      error.response?.data || error.message,
+    );
+
+    return res.status(error.response?.status || 500).json({
+      message:
+        error.response?.data?.error?.message || "Unable to get playlists.",
+    });
+  }
+}

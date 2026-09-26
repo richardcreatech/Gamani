@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../middleware/auth.middleware.js"
-import { add_song_to_playlist, connect_to_spotify, discover_artists, get_artist, get_currently_playing, get_playback_queue, get_playback_state, mute_playback, play_queue_song, play_song, search_artist_song, search_artists, seek_track, skip_next, skip_previous, spotify_callback } from "../controller/spotify.js";
+import { add_song_to_playlist, connect_to_spotify, discover_artists, get_artist, get_currently_playing, get_playback_queue, get_playback_state, get_user_playlists, mute_playback, play_queue_song, play_song, search_artist_song, search_artists, seek_track, skip_next, skip_previous, spotify_callback } from "../controller/spotify.js";
 
 const spotifyRouter = express.Router();
 
@@ -77,6 +77,12 @@ spotifyRouter.post(
   "/playback/queue/play",
   verifyToken,
   play_queue_song
+);
+
+spotifyRouter.get(
+  "/playlists",
+  verifyToken,
+  get_user_playlists,
 );
 
 export default spotifyRouter;
