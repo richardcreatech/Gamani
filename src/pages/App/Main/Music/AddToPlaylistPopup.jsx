@@ -2,30 +2,40 @@ import { faXmark, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function AddToPlaylistPopup({ song, onClose }) {
   const [addingPlaylistId, setAddingPlaylistId] = useState(null);
   const [error, setError] = useState("");
 
+  const [playlists, setPlaylists] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const BACKEND_URL = "http://127.0.0.1:3000";
 
-  const playlists = [
-    {
-      id: 1,
-      name: "Getting Things Done",
-      songs: 18,
-      cover:
-        "https://i.pinimg.com/736x/4e/ae/63/4eae638a97a66fcd5a22c172a94186c8.jpg",
-    },
-    {
-      id: 2,
-      name: "My Favorites",
-      songs: 42,
-      cover:
-        "https://i.pinimg.com/736x/99/d9/5b/99d95bb1c81bf0e2b6a7a23d2ec19147.jpg",
-    },
-  ];
+  useEffect(() => {
+    const getPlaylists = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/playlists`, {
+          credentials: "include",
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Unable to get playlists.");
+        }
+
+        setPlaylists(data.playlists);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getPlaylists();
+  }, []);
 
   const addSongToPlaylist = async (playlistId) => {
     try {
@@ -120,7 +130,6 @@ function AddToPlaylistPopup({ song, onClose }) {
 
               <div className="popup_playlist_info">
                 <strong>{playlist.name}</strong>
-
                 <small>{playlist.songs} songs</small>
               </div>
             </button>

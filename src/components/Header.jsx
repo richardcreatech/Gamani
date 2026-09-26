@@ -40,7 +40,7 @@ function Header() {
           <FontAwesome icon={darkMode ? faMoon : faSun} />
         </span>
 
-        <FontAwesome icon={faUser} />
+        {/* <FontAwesome icon={faUser} /> */}
       </div>
     </header>
   );
